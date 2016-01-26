@@ -1,0 +1,43 @@
+#!/usr/bin/python
+EMAIL_ADDRESS=""
+PASSWORD=""
+TO_ADDRESS=""
+#TO_ADDRESS for phone sms can be found here: http://sms411.net/how-to-send-email-to-a-phone/
+
+
+import smtplib
+import sys
+import subprocess
+
+class MailSender(object):
+    def __init__(self, email_addr=None, password=None):
+        self.email_addr=email_addr
+        self.password=password
+    def set_email(self, email_addr):
+        self.email_addr=email
+    def set_password(self, password):
+        self.password=password
+    def send_email(self, to_addr, message):
+        if self.email_addr is None or self.password is None:
+            raise ValueError("Enter an email address and password!")
+        server=smtplib.SMTP('smtp.gmail.com:587')
+        server.starttls()
+        server.login(self.email_addr, self.password)
+        server.sendmail(self.email_addr, to_addr, message)
+        server.quit()
+
+class Executer(object):
+    def __init__(self, email_address=None, password=None, to_address=None):
+        self.s=MailSender(email_addr=email_address, password=password)
+        self.to_addr=to_address
+    def run(self):
+        command=sys.argv[1:]
+        no_args=len(command)==0
+        cmd_str=' '.join([e for e in command])
+        message="Command {}{}".format(cmd_str, "finished." if no_args else " {}.".format("succeeded" if subprocess.call(command)==0 else "failed"))
+        #print message
+        self.s.send_email(self.to_addr, message) 
+        
+e=Executer(email_address=EMAIL_ADDRESS, password=PASSWORD, to_address=TO_ADDRESS)
+e.run()
+
