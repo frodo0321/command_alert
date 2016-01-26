@@ -1,0 +1,17 @@
+command_alert (ca) is used for getting an email or text message alert when a command finishes running.  Good for compiling large libraries.
+
+This command uses gmail (you can change it by editing the file if you wish).  You must edit the variables at the top of the file to provide an email address, password, and to address.  Password is stored in plaintext so creating a separate gmail account for this is recommended.
+
+For sending sms refer to this website: 
+http://sms411.net/how-to-send-email-to-a-phone/
+
+Usage:
+ca [command]
+ex:
+ca ls -l /home
+
+or can be run by itself
+ex:
+make;ca
+
+
